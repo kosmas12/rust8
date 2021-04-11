@@ -1,9 +1,18 @@
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
+use std::path::Path;
+mod memory;
 
 
 pub fn main() {
+
+    let args: Vec<String> = std::env::args().collect();
+
+    if args[1] != "repl" {
+        let _memory = memory::load_rom(&Path::new(&args[1]));
+    }
+
     let sdl_context = sdl2::init().expect("Couldn't initialize SDL2!");
     let video_subsystem = sdl_context.video()
         .expect("Couldn't create SDL2 video context!");
