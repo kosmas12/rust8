@@ -29,9 +29,19 @@ pub fn load_rom(path: &Path) -> Vec<u8> {
         Ok(file) => file,
     };
 
-    let mut buffer = Vec::new();
+    let mut buffer = [0; 1];
+    let mut memory = vec![0; 4096];
 
-    file.read_to_end(&mut buffer).expect("Couldn't read ROM!");
+    let mut i = 200;
+    let mut bytes = file.read(&mut buffer)
+        .expect("Couldn't read from ROM");
 
-    buffer
+    while bytes != 0 {
+        memory[i] = buffer[0];
+        i = i + 1;
+        bytes = file.read(&mut buffer)
+            .expect("Couldn't read from ROM");
+    }
+
+    memory
 }
